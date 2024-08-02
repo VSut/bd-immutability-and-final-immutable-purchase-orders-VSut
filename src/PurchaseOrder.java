@@ -6,7 +6,11 @@ import java.util.List;
 /**
  * A PurchaseOrder tracks a sales contract between Amazon and a vendor
  */
-public class PurchaseOrder {
+public final class  PurchaseOrder {
+    private final ZonedDateTime orderDate;
+    private final BigDecimal subtotal;
+    private final String vendor;
+    private final List<String> items;
 
     /**
      * Constructor.
@@ -16,6 +20,10 @@ public class PurchaseOrder {
      * @param items - List of items purchased.
      */
     public PurchaseOrder(ZonedDateTime orderDate, BigDecimal subtotal, String vendor, List<String> items) {
+        this.orderDate = ZonedDateTime.from(orderDate);
+        this.subtotal = BigDecimal.valueOf(subtotal.doubleValue());
+        this.vendor = vendor;
+        this.items = new ArrayList<>(items);
 
     }
 
@@ -25,7 +33,7 @@ public class PurchaseOrder {
      * @return Cost including tax rate.
      */
     public BigDecimal determineBillableCost(Double taxRate) {
-        return new BigDecimal("0.0");
+        return new BigDecimal(subtotal.toBigIntegerExact());
     }
 
     /**
@@ -33,7 +41,7 @@ public class PurchaseOrder {
      * @return subtotal
      */
     public BigDecimal getSubtotal() {
-        return new BigDecimal("0.0");
+        return BigDecimal.valueOf(subtotal.doubleValue());
     }
 
     /**
@@ -41,7 +49,7 @@ public class PurchaseOrder {
      * @return vendor
      */
     public String getVendor() {
-        return "";
+        return vendor;
     }
 
     /**
@@ -49,7 +57,7 @@ public class PurchaseOrder {
      * @return item list
      */
     public List<String> getItems() {
-        return new ArrayList<String>();
+        return new ArrayList<String>(items);
     }
 
     /**
@@ -57,6 +65,6 @@ public class PurchaseOrder {
      * @return Order Date
      */
     public ZonedDateTime getOrderDate() {
-        return ZonedDateTime.now();
+        return ZonedDateTime.from(orderDate);
     }
 }
